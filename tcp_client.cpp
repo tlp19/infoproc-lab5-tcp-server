@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         log_verbose("Connected, sending update %u to server", tSendStart-tConnectStart, value);
 
         send_helper(s, &value, 4);
-        
+
         uint32_t payload;
         double tRecvStart=now();
         recv_helper(s, &payload, 4);
@@ -32,5 +32,7 @@ int main(int argc, char *argv[])
 
         log_verbose("Closing connection.");
         close(s);
+
+        sleep(1);
     }
 }

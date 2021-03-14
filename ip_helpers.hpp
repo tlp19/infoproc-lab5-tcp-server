@@ -22,6 +22,9 @@
 #include <iostream>
 #include <vector>
 
+// My headers
+#include <stdlib.h>
+
 double now()
 {
     timespec ts;
@@ -58,7 +61,7 @@ inline void log_impl(const char *type, const char *msg, va_list args)
     double t=now();
     char buffer[256]={0};
     vsnprintf(buffer, sizeof(buffer)-1, msg, args);
-    
+
     fprintf(stderr, "%.8f (%s) : %s\n", t, type, buffer);
 }
 
@@ -150,7 +153,7 @@ inline sockaddr_in make_sockaddr_in(const std::string &addr)
 {
     int colon=addr.find(':');
     check_status(colon!=std::string::npos, "Missing colon in address ");
-    
+
     std::string addr_ip=addr.substr(0, colon);
     std::string addr_port=addr.substr(colon+1, std::string::npos);
 
@@ -246,7 +249,7 @@ struct http_line_buffer
             check_status(status>0, "Failure during send.", errno);
 
             buffer.resize(valid_size+status);
-        }        
+        }
     }
 };
 
