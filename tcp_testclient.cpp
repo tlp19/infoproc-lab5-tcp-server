@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
            log_info(">> Game started: Move your board to the right angle! (%u)", coordinates);
         } else if(received == 0){
            log_info(">> Game running...");
+        } else {
+           log_verbose(">> unknown message received: %u", received);
         }
         close(s);
 

@@ -115,7 +115,10 @@ int main(int argc, char *argv[])
     std::uniform_int_distribution<uint16_t> dist(0, angle_range); //range is 0000 to 9999
     uint16_t random_X_angle = dist(mt);
     uint16_t random_Y_angle = dist(mt);
-    uint32_t coordinates = 10000*random_X_angle + random_Y_angle;
+    // Build the coordinates value to be transmitted (in decimal: 1XXXXYYYY)
+    uint32_t coord_tag = 100000000;
+    uint16_t X_formatoffset = 10000;
+    uint32_t coordinates = coord_tag + X_formatoffset*random_X_angle + random_Y_angle;
 
     // Send coordinates to all clients in queue until all players have received it
     while(started_players.size() != nb_players){
