@@ -197,7 +197,61 @@ int main(int argc, char *argv[])
         close(client);
     }
 
-    // TODO: Send ranking of players based on player_times
 
+
+
+   // Sort ip addresses by time
+   std::map<uint32_t, uint32_t> ordered_times(player_times.begin(), player_times.end());
+   std::multimap<int, int> sorted_times;
+   for(auto const &entry : ordered_times) {
+      sorted_times.insert(std::make_pair(entry.second, entry.first));
+   }
+   // Rank the addresses
+   std::vector<uint32_t> ranked_addresses;
+   for(auto const &mm_entry : sorted_times) {
+      ranked_addresses.push_back(mm_entry.second);
+   }
+
+   // Connect to each player and send them their ranking
+   std::unordered_set<uint32_t> players_told_rank;
+
+   while(players_told_rank.size() != nb_players){
+      // Connect to one of the clients at a time
+      sockaddr_in src_addr;
+      socklen_t src_addr_len=sizeof(sockaddr_in);
+      int client=accept(s, (sockaddr*)&src_addr, &src_addr_len);
+      check_status(client!=-1, "accept failed.", errno);
+      if(log_verbose_enabled()){
+           log_stream_verbose()<<"Established connection with client addr="<<sockaddr_in_to_string(src_addr)<<"\n";
+      }
+      // Receive data from client
+      uint32_t received;
+      recv_helper(client,
+           &received, 4
+      );
+      // Get the rank of the player by it's address
+      int player_rank;
+      for (int i = 0 ; i < ranked_addresses.size() ; i++){
+         if(src_addr.sin_addr.s_addr==ranked_addresses[i]){
+            player_rank = i+1;
+         }
+      }
+      int send_rank = 1000 + player_rank;
+      // Send the rank to the player
+      if(players_told_rank.find(src_addr.sin_addr.s_addr) == players_told_rank.end()){
+         // Player has never been told his rank
+         send_helper(client,
+              &send_rank, 4
+         );
+         // Add the player to the list of players that have been told their rank
+         players_told_rank.insert(src_addr.sin_addr.s_addr);
+      } else {
+         // Player already has been told his rank (shouldn't happen)
+         send_helper(client,
+              &send_default, 4
+         );
+      }
+      close(client);
+   }
 
 }

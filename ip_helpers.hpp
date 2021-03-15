@@ -29,6 +29,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <random>
+#include <map>
 
 double now()
 {

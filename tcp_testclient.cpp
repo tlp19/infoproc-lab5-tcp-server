@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
            log_info(">> Hello, your player number is: %u", received);
         } else if((received >= 1001) && (received <= 2000)){
            log_info(">> Congratulations, your ranking is: %u", received);
+           //exit client program
+           return 0;
         } else if((received >= 100000000) && (received <= 200000000)){
            //remove coord_tag
            uint32_t coordinates = received - 100000000;
