@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
     uint32_t send_default = 0;
 
     // Generate random coordinates
-    random_device seed; //truly random seed (slow)
-    mt19937 mt(rd()); //pseudo random generator (fast and repeatable)
-    uniform_real_distribution<uint16_t> dist(0, angle_range); //range is 0000 to 9999
+    std::random_device seed; //truly random seed (slow)
+    std::mt19937 mt(rd()); //pseudo random generator (fast and repeatable)
+    std::uniform_real_distribution<uint16_t> dist(0, angle_range); //range is 0000 to 9999
     uint16_t random_X_angle = dist(mt);
     uint16_t random_Y_angle = dist(mt);
     uint32_t coordinates = 10000*random_X_angle + random_Y_angle;
