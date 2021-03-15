@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
 
     // Store all clients that have connected once
     std::unordered_map<uint32_t, uint32_t> clients_connected;
-               //ip_address   //player_nb
-    uint32_t player_nb = 0;
+               //ip_address   //nb_players
+    uint32_t nb_players = 0;
 
     //List all clients trying to access server
     for(int i = 1; i <= backlog ; i++){
@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
       if(log_verbose_enabled()){
            log_stream_verbose()<<"Established connection with client addr="<<sockaddr_in_to_string(src_addr)<<"\n";
       }
+      // Check if client was connected before or not
       if(clients_connected.find(src_addr.sin_addr.s_addr) == clients_connected.end()){
          //Client not connected before:
 
@@ -58,12 +59,12 @@ int main(int argc, char *argv[])
          );
 
          // Increment the number of player by one
-         player_nb++;
+         nb_players++;
          // Add the address to the list of clients connected
-         clients_connected[src_addr.sin_addr.s_addr] = player_nb;
+         clients_connected[src_addr.sin_addr.s_addr] = nb_players;
          // Send back to the client the new player number
          send_helper(client,
-              &player_nb, 4
+              &nb_players, 4
          );
       } else {
          //Previous client:
@@ -85,18 +86,72 @@ int main(int argc, char *argv[])
 
 
     // Pause
-    std::cout << std::endl << "Found " << player_nb << " players." << std::endl;
+    std::cout << std::endl << "Found " << nb_players << " players." << std::endl;
     std::cout << std::endl << "Press ENTER to start game";
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
-    //TODO: send coordinates
+    std::unordered_set<uint32_t> started_players;
+               //ip_address
+
+    // Generate coordinates
+   uint32_t coordinates = 00000000 ;
+   uint32_t send_default = 0;
+
+    // Send coordinates to all clients in queue until all players have received it
+    while(started_players.size() != nb_players){
+      // Connect to one of the players at a time
+      sockaddr_in src_addr;
+      socklen_t src_addr_len=sizeof(sockaddr_in);
+      int client=accept(s, (sockaddr*)&src_addr, &src_addr_len);
+      check_status(client!=-1, "accept failed.", errno);
+      if(clients_connected.find(src_addr.sin_addr.s_addr) == clients_connected.end()){
+         //Client not connected before:
+
+         // Receive one packet and send it back
+         uint32_t received;
+         recv_helper(client,
+              &received, 4
+         );
+         send_helper(client,
+              &received, 4
+         );
+      } else {
+         // Connected player: check if it got the coordinates before
+         if(started_players.find(src_addr.sin_addr.s_addr) == started_players.end()){
+            // It didn't
+            started_players.insert(src_addr.sin_addr.s_addr);
+            uint32_t received;
+            recv_helper(client,
+               &received, 4
+            );
+            // Send the coordinates
+            send_helper(client,
+               &coordinates, 4
+            );
+         } else {
+            // It did
+            uint32_t received;
+            recv_helper(client,
+               &received, 4
+            );
+            // Send default message
+            send_helper(client,
+               &send_default, 4
+            );
+
+         }
+      }
+      close(client);
+   }
 
 
-    int nb_finished_player = 0;
     std::unordered_map<uint32_t, uint32_t> player_times;
 
-    while(nb_finished_player != player_nb){
+    uint32_t send = 0 ;
+
+    // Check that the players have finished or not
+    while(player_times.size() != nb_players){
         // Connect to one of the clients at a time
         sockaddr_in src_addr;
         socklen_t src_addr_len=sizeof(sockaddr_in);
@@ -115,15 +170,11 @@ int main(int argc, char *argv[])
         }
         // If received data is 0, the player hasn't finshed, other it's the time that it took him to finish
         if(received != 0) {
-           nb_finished_player++;
            player_times[src_addr.sin_addr.s_addr] = received;
         }
-
-        uint32_t send = 0 ;
         send_helper(client,
             &send, 4
         );
-
         close(client);
     }
 

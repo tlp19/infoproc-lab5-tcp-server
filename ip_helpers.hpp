@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <limits>
 #include <unordered_map>
+#include <unordered_set>
 
 double now()
 {

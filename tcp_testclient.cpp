@@ -30,12 +30,12 @@ int main(int argc, char *argv[])
         // 0: game is running
         // 1-1000: player number
         // 1000-2000: ranking
-        // 1xxxyyyzzz-2xxxyyyzzz: target coordinates
+        // 1xxxxyyyy-2xxxxyyyy: target coordinates
         if((received >= 1) && (received <= 1000)){
            log_info("[Received] Hello, your player number is: %u", received);
         } else if((received >= 1001) && (received <= 2000)){
            log_info("[Received] Congratulations, your ranking is: %u", received);
-        } else if((received >= 1000000000) && (received <= 2000000000)){
+        } else if((received >= 100000000) && (received <= 200000000)){
            log_info("[Received] Game started: Move your board to the right angle!");
         } else if(received == 0){
            log_info("[Received] Game running...");
