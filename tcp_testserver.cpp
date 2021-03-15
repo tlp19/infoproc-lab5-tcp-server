@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
             &received, 4
         );
         if(log_info_enabled()){
-            log_stream_info()<<"Received "<<received<<" from addr="<<src_addr.sin_addr.s_addr<<":"<<src_addr.sin_port<<"\n";
+            log_stream_info()<<"Received: "<<received<<"\n";
         }
         // If received data is 0, the player hasn't finshed, other it's the time that it took him to finish
         if(received != 0) {
