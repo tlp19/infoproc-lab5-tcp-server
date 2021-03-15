@@ -1,9 +1,6 @@
 #include "ip_helpers.hpp"
 #include "game_parameters.hpp"
 
-// Declare extern variables
-int backlog;
-int angle_range;
 
 int main(int argc, char *argv[])
 {
@@ -26,12 +23,12 @@ int main(int argc, char *argv[])
     check_status(status!=-1, "Couldn't bind socket");
 
     log_info("Listening for incoming connections");
-    status=listen(s, ::backlog);
+    status=listen(s, Parameters::backlog);
     check_status(status!=-1, "Couldn't listen on socket.");
 
 
     // Pause
-    std::cout << std::endl << "Tell all clients to connect to the server (up to " <<::backlog<< "), then press ENTER:";
+    std::cout << std::endl << "Tell all clients to connect to the server (up to " <<Parameters::backlog<< "), then press ENTER:";
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
@@ -43,7 +40,7 @@ int main(int argc, char *argv[])
     uint32_t nb_players = 0;
 
     //List all clients trying to access server
-    for(int i = 1; i <= ::backlog ; i++){
+    for(int i = 1; i <= Parameters::backlog ; i++){
       // Establish connection with one client at a time
       sockaddr_in src_addr;
       socklen_t src_addr_len=sizeof(sockaddr_in);
@@ -103,7 +100,7 @@ int main(int argc, char *argv[])
     // Generate random coordinates
     std::random_device seed; //truly random seed (slow)
     std::mt19937 mt(seed()); //pseudo random generator (fast and repeatable)
-    std::uniform_int_distribution<uint16_t> dist(0, ::angle_range); //range is 0000 to 9999
+    std::uniform_int_distribution<uint16_t> dist(0, Parameters::angle_range); //range is 0000 to 9999
     uint16_t random_X_angle = dist(mt);
     uint16_t random_Y_angle = dist(mt);
     // Build the coordinates value to be transmitted (in decimal: 1XXXXYYYY)
