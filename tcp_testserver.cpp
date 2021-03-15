@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
     // Generate random coordinates
     std::random_device seed; //truly random seed (slow)
-    std::mt19937 mt(rd()); //pseudo random generator (fast and repeatable)
+    std::mt19937 mt(seed()); //pseudo random generator (fast and repeatable)
     std::uniform_real_distribution<uint16_t> dist(0, angle_range); //range is 0000 to 9999
     uint16_t random_X_angle = dist(mt);
     uint16_t random_Y_angle = dist(mt);
