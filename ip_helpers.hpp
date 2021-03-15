@@ -24,6 +24,8 @@
 
 // My headers
 #include <stdlib.h>
+#include <limits>
+#include <unordered_map>
 
 double now()
 {
