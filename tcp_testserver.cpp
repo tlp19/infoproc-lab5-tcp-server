@@ -1,5 +1,19 @@
 #include "ip_helpers.hpp"
 
+
+// Game Parameters
+
+int backlog=10;   // Number of pending connections before clients are refused.
+                  // I.e. maximum number of player.
+
+int angle_range=100;    // Range that X and Y angles will be generated in.
+                        // Angles are centered around zero, so actual range is [-angle_range/2 ; angle_range/2]
+                        // Recommanded: range value 100 (eq. to [-50 ; 50])
+                        // Maximum: 510 (eq. to [-255 ; 255])
+
+
+
+
 int main(int argc, char *argv[])
 {
     log_init();
@@ -21,7 +35,6 @@ int main(int argc, char *argv[])
     check_status(status!=-1, "Couldn't bind socket");
 
     log_info("Listening for incoming connections");
-    int backlog=10;  // Number of pending connections before clients are refused
     status=listen(s, backlog);
     check_status(status!=-1, "Couldn't listen on socket.");
 
@@ -92,11 +105,17 @@ int main(int argc, char *argv[])
 
 
     std::unordered_set<uint32_t> started_players;
-               //ip_address
+                     //ip_address
 
-    // Generate coordinates
-   uint32_t coordinates = 100010001 ;
-   uint32_t send_default = 0;
+    uint32_t send_default = 0;
+
+    // Generate random coordinates
+    random_device seed; //truly random seed (slow)
+    mt19937 mt(rd()); //pseudo random generator (fast and repeatable)
+    uniform_real_distribution<uint16_t> dist(0, angle_range); //range is 0000 to 9999
+    uint16_t random_X_angle = dist(mt);
+    uint16_t random_Y_angle = dist(mt);
+    uint32_t coordinates = 10000*random_X_angle + random_Y_angle;
 
     // Send coordinates to all clients in queue until all players have received it
     while(started_players.size() != nb_players){
@@ -153,7 +172,7 @@ int main(int argc, char *argv[])
       close(client);
    }
 
-   std::cout << std::endl << "All players got the coordinates, now waiting for all their times..." << std::endl;
+   std::cout << std::endl << "All players got the coordinates, now waiting for all their times..." << std::endl << std::endl;
 
     std::unordered_map<uint32_t, uint32_t> player_times;
 

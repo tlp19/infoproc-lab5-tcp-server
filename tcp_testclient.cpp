@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
         check_status(status!=-1, "Connect failed.");
 
         double tSendStart=now();
-        log_verbose(">> %u", tSendStart-tConnectStart, value);
+        log_verbose("<< %u", tSendStart-tConnectStart, value);
 
         send_helper(s, &value, 4);
 
@@ -32,14 +32,14 @@ int main(int argc, char *argv[])
         // 1000-2000: ranking
         // 1xxxxyyyy-2xxxxyyyy: target coordinates
         if((received >= 1) && (received <= 1000)){
-           log_info("[Received] Hello, your player number is: %u", received);
+           log_info(">> Hello, your player number is: %u", received);
         } else if((received >= 1001) && (received <= 2000)){
-           log_info("[Received] Congratulations, your ranking is: %u", received);
+           log_info(">> Congratulations, your ranking is: %u", received);
         } else if((received >= 100000000) && (received <= 200000000)){
            uint32_t coordinates = received - 100000000;
-           log_info("[Received] Game started: Move your board to the right angle! (%u)", coordinates);
+           log_info(">> Game started: Move your board to the right angle! (%u)", coordinates);
         } else if(received == 0){
-           log_info("[Received] Game running...");
+           log_info(">> Game running...");
         }
         close(s);
 

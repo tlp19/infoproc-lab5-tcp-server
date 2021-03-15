@@ -27,6 +27,7 @@
 #include <limits>
 #include <unordered_map>
 #include <unordered_set>
+#include <random>
 
 double now()
 {
