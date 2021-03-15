@@ -25,9 +25,6 @@ int main(int argc, char *argv[])
     status=listen(s, backlog);
     check_status(status!=-1, "Couldn't listen on socket.");
 
-    uint32_t accumulator=0;
-
-
 
     // Pause
     std::cout << std::endl << "Tell all clients to connect to the server, then press ENTER:";
@@ -93,37 +90,48 @@ int main(int argc, char *argv[])
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
+    //TODO: send coordinates
 
-    while(1){
-       log_verbose("Waiting to accept");
 
+    int nb_finished_player = 0;
+    std::unordered_map<uint32_t, uint32_t> player_times;
+
+    while(nb_finished_player != player_nb){
+        // Connect to one of the clients at a time
         sockaddr_in src_addr;
         socklen_t src_addr_len=sizeof(sockaddr_in);
-
         int client=accept(s, (sockaddr*)&src_addr, &src_addr_len);
         check_status(client!=-1, "accept failed.", errno);
-
         if(log_verbose_enabled()){
             log_stream_verbose()<<"Established connection with client addr="<<sockaddr_in_to_string(src_addr)<<"\n";
         }
-
-        uint32_t payload;
-        log_verbose("Waiting to receive");
+        // Receive data from client
+        uint32_t received;
         recv_helper(client,
-            &payload, 4
+            &received, 4
         );
-
-        accumulator += payload;
-
         if(log_info_enabled()){
-            log_stream_info()<<"Received "<<payload<<" from addr="<<src_addr.sin_addr.s_addr<<":"<<src_addr.sin_port<<"; new accumulator = "<<accumulator<<"\n";
+            log_stream_info()<<"Received "<<received<<" from addr="<<src_addr.sin_addr.s_addr<<":"<<src_addr.sin_port<<"\n";
+        }
+        // If received data is 0, the player hasn't finshed, other it's the time that it took him to finish
+        if(received = 0) {
+           // Player hasn't finished
+
+           // Don't do anything, go to next client
+        } else {
+           nb_finished_player++;
+           player_times[src_addr.sin_addr.s_addr] = received;
         }
 
+        uint32_t send = 0 ;
         send_helper(client,
-            &accumulator, 4
+            &send, 4
         );
 
-        log_verbose("Closing channel.");
         close(client);
     }
+
+    // TODO: Send ranking of players based on player_times
+
+    
 }
