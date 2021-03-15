@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
         } else if((received >= 1001) && (received <= 2000)){
            log_info("[Received] Congratulations, your ranking is: %u", received);
         } else if((received >= 100000000) && (received <= 200000000)){
-           log_info("[Received] Game started: Move your board to the right angle!");
+           uint32_t coordinates = received - 100000000;
+           log_info("[Received] Game started: Move your board to the right angle! (%u)", coordinates);
         } else if(received == 0){
            log_info("[Received] Game running...");
         }

@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
 
     // Pause
     std::cout << std::endl << "Found " << nb_players << " players." << std::endl;
-    std::cout << std::endl << "Press ENTER to start game";
+    std::cout << std::endl << "Press ENTER to send coordinates and start game:";
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
                //ip_address
 
     // Generate coordinates
-   uint32_t coordinates = 00000000 ;
+   uint32_t coordinates = 100010001 ;
    uint32_t send_default = 0;
 
     // Send coordinates to all clients in queue until all players have received it
