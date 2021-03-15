@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
 
     //List all clients trying to access server
     for(int i = 1; i <= backlog ; i++){
-      log_verbose("Waiting to accept");
       // Establish connection with one client at a time
       sockaddr_in src_addr;
       socklen_t src_addr_len=sizeof(sockaddr_in);
@@ -57,13 +56,9 @@ int main(int argc, char *argv[])
 
          // Receive one packet
          uint32_t received;
-         log_verbose("Waiting to receive");
          recv_helper(client,
               &received, 4
          );
-         if(log_info_enabled()){
-              log_stream_info()<<"Received "<<received<<" from addr="<<src_addr.sin_addr.s_addr<<":"<<src_addr.sin_port<<"\n";
-         }
 
          // Increment the number of player by one
          player_nb++;
@@ -78,21 +73,15 @@ int main(int argc, char *argv[])
 
          // Receive one packet
          uint32_t received;
-         log_verbose("Waiting to receive");
          recv_helper(client,
               &received, 4
          );
-         if(log_info_enabled()){
-              log_stream_info()<<"Received "<<received<<" from addr="<<src_addr.sin_addr.s_addr<<":"<<src_addr.sin_port<<"\n";
-         }
 
          // Send back to the client the previously assigned player number
          send_helper(client,
               &clients_connected[src_addr.sin_addr.s_addr], 4
          );
       }
-
-      log_verbose("Closing channel.");
       close(client);
     }
 
