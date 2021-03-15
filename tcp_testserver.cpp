@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
 
     // Pause
-    std::cout << std::endl << "Tell all clients to connect to the server (up to" <<backlog<< "), then press ENTER:";
+    std::cout << std::endl << "Tell all clients to connect to the server (up to " <<backlog<< "), then press ENTER:";
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
