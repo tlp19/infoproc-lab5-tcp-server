@@ -1,4 +1,13 @@
 #include "ip_helpers.hpp"
+#include "game_parameters.hpp"
+
+uint16_t adjust_to_range(uint32_t input){
+   if(input > angle_range/2){
+      return (uint16_t)(-(input-50));
+   } else {
+      return (uint16_t)input;
+   }
+}
 
 int main(int argc, char *argv[])
 {
@@ -36,8 +45,15 @@ int main(int argc, char *argv[])
         } else if((received >= 1001) && (received <= 2000)){
            log_info(">> Congratulations, your ranking is: %u", received);
         } else if((received >= 100000000) && (received <= 200000000)){
+           //remove coord_tag
            uint32_t coordinates = received - 100000000;
-           log_info(">> Game started: Move your board to the right angle! (%u)", coordinates);
+           //extract Y angle
+           uint16_t Y_angle = adjust_to_range(coordinates % 10000);
+           //remove Y angle from remaining value and extract X_angle
+           coordinates -= Y_angle;
+           coordinates /= 10000;
+           uint16_t X_angle = adjust_to_range(coordinates);
+           log_info(">> Game started: Move your board to the right angle! (%d,%d)", X_angle, Y_angle);
         } else if(received == 0){
            log_info(">> Game running...");
         } else {
@@ -45,6 +61,6 @@ int main(int argc, char *argv[])
         }
         close(s);
 
-        sleep(1);
+        sleep(0.8);
     }
 }
