@@ -21,13 +21,13 @@ int main(int argc, char *argv[])
     check_status(status!=-1, "Couldn't bind socket");
 
     log_info("Listening for incoming connections");
-    int backlog=16;  // Number of pending connections before clients are refused
+    int backlog=10;  // Number of pending connections before clients are refused
     status=listen(s, backlog);
     check_status(status!=-1, "Couldn't listen on socket.");
 
 
     // Pause
-    std::cout << std::endl << "Tell all clients to connect to the server, then press ENTER:";
+    std::cout << std::endl << "Tell all clients to connect to the server (up to" <<backlog<< "), then press ENTER:";
     std::cin.ignore( std::numeric_limits<std::streamsize>::max(), '\n' );
 
 
@@ -133,5 +133,5 @@ int main(int argc, char *argv[])
 
     // TODO: Send ranking of players based on player_times
 
-    
+
 }
