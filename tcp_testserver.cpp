@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
 
     // Store all clients that have connected once
-    std::unordered_map<uint32_t, uint32_t> clients_connected;
+    std::unordered_map<uint32_t, uint32_t> connected_players;
                //ip_address   //nb_players
     uint32_t nb_players = 0;
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
            log_stream_verbose()<<"Established connection with client addr="<<sockaddr_in_to_string(src_addr)<<"\n";
       }
       // Check if client was connected before or not
-      if(clients_connected.find(src_addr.sin_addr.s_addr) == clients_connected.end()){
+      if(connected_players.find(src_addr.sin_addr.s_addr) == connected_players.end()){
          //Client not connected before:
 
          // Receive one packet
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
          // Increment the number of player by one
          nb_players++;
          // Add the address to the list of clients connected
-         clients_connected[src_addr.sin_addr.s_addr] = nb_players;
+         connected_players[src_addr.sin_addr.s_addr] = nb_players;
          // Send back to the client the new player number
          send_helper(client,
               &nb_players, 4
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
          // Send back to the client the previously assigned player number
          send_helper(client,
-              &clients_connected[src_addr.sin_addr.s_addr], 4
+              &connected_players[src_addr.sin_addr.s_addr], 4
          );
       }
       close(client);
@@ -105,9 +105,11 @@ int main(int argc, char *argv[])
       socklen_t src_addr_len=sizeof(sockaddr_in);
       int client=accept(s, (sockaddr*)&src_addr, &src_addr_len);
       check_status(client!=-1, "accept failed.", errno);
-      if(clients_connected.find(src_addr.sin_addr.s_addr) == clients_connected.end()){
+      if(connected_players.find(src_addr.sin_addr.s_addr) == connected_players.end()){
          //Client not connected before:
-
+         if(log_verbose_enabled()){
+            log_stream_verbose()<<"Unknown client, skipping.\n";
+         }
          // Receive one packet and send it back
          uint32_t received;
          recv_helper(client,
@@ -120,6 +122,9 @@ int main(int argc, char *argv[])
          // Connected player: check if it got the coordinates before
          if(started_players.find(src_addr.sin_addr.s_addr) == started_players.end()){
             // It didn't
+            if(log_verbose_enabled()){
+               log_stream_verbose()<<"Sending coordinates to player "<<connected_players[src_addr.sin_addr.s_addr]<<"\n";
+            }
             started_players.insert(src_addr.sin_addr.s_addr);
             uint32_t received;
             recv_helper(client,
@@ -131,6 +136,9 @@ int main(int argc, char *argv[])
             );
          } else {
             // It did
+            if(log_verbose_enabled()){
+               log_stream_verbose()<<"Player "<<connected_players[src_addr.sin_addr.s_addr]<<" already had the coordinates\n";
+            }
             uint32_t received;
             recv_helper(client,
                &received, 4
@@ -145,6 +153,7 @@ int main(int argc, char *argv[])
       close(client);
    }
 
+   std::cout << std::endl << "All players got the coordinates, now waiting for all their times..." << std::endl;
 
     std::unordered_map<uint32_t, uint32_t> player_times;
 
