@@ -1,8 +1,12 @@
 #include "ip_helpers.hpp"
 #include "game_parameters.hpp"
 
+// Declare extern variables
+int angle_range;
+
+//Takes an unsigned int and adjusts it to the range specified in game_parameters
 uint16_t adjust_to_range(uint32_t input){
-   if(input > angle_range/2){
+   if(input > ::angle_range/2){
       return (uint16_t)(-(input-50));
    } else {
       return (uint16_t)input;
