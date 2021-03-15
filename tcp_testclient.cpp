@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
         int s=socket(AF_INET, SOCK_STREAM, 0);
         check_status(s!=-1, "Couldn't create socket", errno);
 
+        // READ THAT VALUE FROM THE BOARD
         uint32_t value=0;
 
         double tConnectStart=now();
@@ -55,7 +56,10 @@ int main(int argc, char *argv[])
            coordinates -= Y_angle;
            coordinates /= 10000;
            uint16_t X_angle = adjust_to_range(coordinates);
-           log_info(">> Game started: Move your board to the right angle! (%d,%d)", X_angle, Y_angle);
+           log_info(">> Game started: Move your board to the right angle! (%x ; %x)", X_angle, Y_angle);
+
+           // SEND THOSE COORDINATES TO THE BOARD
+
         } else if(received == 0){
            log_info(">> Game running...");
         } else {
@@ -63,6 +67,6 @@ int main(int argc, char *argv[])
         }
         close(s);
 
-        sleep(0.8);
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
 }
