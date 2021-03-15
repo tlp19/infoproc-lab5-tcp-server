@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     // Store all clients that have connected once
     std::unordered_map<uint32_t, uint32_t> clients_connected;
                //ip_address   //player_nb
-    uint32_t player_nb = 1;
+    uint32_t player_nb = 0;
 
     //List all clients trying to access server
     for(int i = 1; i <= backlog ; i++){
