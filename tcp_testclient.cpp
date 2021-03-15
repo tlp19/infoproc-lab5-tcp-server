@@ -13,20 +13,17 @@ int main(int argc, char *argv[])
         uint32_t value=0;
 
         double tConnectStart=now();
-        if(log_verbose_enabled()){
-            log_stream_verbose()<<"Connecting to server at address "<<sockaddr_in_to_string(dst_addr)<<"\n";
-        }
         auto status=connect(s, (const sockaddr*)&dst_addr, sizeof(dst_addr));
         check_status(status!=-1, "Connect failed.");
 
         double tSendStart=now();
-        log_verbose("Connected, sending %u", tSendStart-tConnectStart, value);
+        log_verbose(">> %u", tSendStart-tConnectStart, value);
 
         send_helper(s, &value, 4);
 
-        uint32_t payload;
+        uint32_t received;
         double tRecvStart=now();
-        recv_helper(s, &payload, 4);
+        recv_helper(s, &received, 4);
         double tRecvEnd=now();
 
         // If receives

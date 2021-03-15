@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
         int s=socket(AF_INET, SOCK_STREAM, 0);
         check_status(s!=-1, "Couldn't create socket", errno);
 
-        uint32_t value=0;
+        uint32_t value=1;
 
         double tConnectStart=now();
         if(log_verbose_enabled()){
