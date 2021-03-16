@@ -33,16 +33,28 @@ You might also have to change the privacy settings of the .pem file using ```$ c
 To start the server, you just have to run the ```update_and_start_server.sh``` script.
 This is done by running the command ```$ bash update_and_start_server.sh```.
 
+_Note: using just ```$ ./update_and_start_server.sh``` might not work as the script requires special permissions._
+
 This script will do the following operations:
 1. Pull the latest version of the server from GitHub so that it is always up-to-date.
 2. Compile the source code from ```src/tcp_server.cpp``` as ```bin/tcp_server```.
 3. Start the server on port 7000 (the default port).
 
-Note: using just ```$ ./update_and_start_server.sh``` might not work as the script requires special permissions.
+If you have already used the script before, and don't want to pull the whole repository, you can also just directly run the server with ```$ ./src/tcp_server 7000```
 
 ### Starting the clients
 
-TODO
+Once you have started the server, you can tell each player to connect to it with their client program.
+
+As a player, to run the client, you need to have cloned this repository on your local machine, have g++ installed, and run
+```$ bash update_client.sh```
+to get the latest version of the client program and compile it.
+
+You can then run the client using ```$ ./src/tcp_client <address>:<port>```
+
+Where:
+- ```<address>``` is the IPv4 address of the server.
+- ```<port>``` is 7000.
 
 ### Controlling the game
 
