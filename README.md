@@ -40,7 +40,7 @@ You might also have to change the privacy settings of the .pem file using ```$ c
 
 ### Starting the server
 
-To start the server, you just have to run the ```update_and_start_server.sh``` script.
+To compile and start the server, you just have to run the ```update_and_start_server.sh``` script.
 This is done by running the command ```$ bash update_and_start_server.sh```.
 
 _Note: using just ```$ ./update_and_start_server.sh``` might not work as the script requires special permissions._
@@ -50,7 +50,7 @@ This script will do the following operations:
 2. Compile the source code from ```src/tcp_server.cpp``` as ```src/tcp_server```.
 3. Start the server on port 7000 (the default port).
 
-If you have already used the script before, and don't want to pull the whole repository again, you can also just directly run the server on port 7000 with ```$ ./src/tcp_server 7000```
+Latter on, if you want to start the server again without pulling the whole repository from GitHub, use ```$ bash start_server.sh```
 
 ### Starting the clients
 
@@ -58,15 +58,9 @@ Once you have started the server, you can tell each player to connect to it with
 
 _Note: You need to start the server before running the clients. Otherwise, the client program will not have an address to connect to and will terminate immediately.
 
-As a player, to run the client, you need to have cloned this repository on your local machine, have g++ installed, and run
-```$ bash update_client.sh```
-to get the latest version of the client program and compile it.
+As a player, to run the client, you need to have cloned this repository, have g++ installed, and run ```$ bash update_and_run_client.sh <address>```, where ```<address>``` is the IPv4 address of the server, to get the latest version of the client program, compile it, and run it.
 
-You can then run the client using ```$ ./src/tcp_client <address>:<port>```
-
-Where:
-- ```<address>``` is the IPv4 address of the server.
-- ```<port>``` is 7000.
+Latter on, if you want to run the client again without pulling the whole repository from GitHub, use ```$ bash run_client.sh <address>```
 
 ### Controlling the game
 
