@@ -4,11 +4,7 @@
 
 //Takes an unsigned int and adjusts it to the range specified in game_parameters
 uint16_t adjust_to_range(uint32_t input){
-   if(input > Parameters::angle_range/2){
-      return (uint16_t)(-(input-50));
-   } else {
-      return (uint16_t)input;
-   }
+   return input - (Parameters::angle_range/2);
 }
 
 int main(int argc, char *argv[])
@@ -50,7 +46,7 @@ int main(int argc, char *argv[])
            log_info(">> Congratulations, your rank is: %u", rank);
            //exit client program
            return 0;
-        } else if((received >= 100000000) && (received <= 200000000)){
+        } else if((received >= 100000000) && (received < 200000000)){
            //remove coord_tag
            uint32_t coordinates = received - 100000000;
            //extract Y angle
