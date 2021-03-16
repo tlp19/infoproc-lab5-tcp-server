@@ -46,7 +46,8 @@ int main(int argc, char *argv[])
         if((received >= 1) && (received <= 1000)){
            log_info(">> Hello, your player number is: %u", received);
         } else if((received >= 1001) && (received <= 2000)){
-           log_info(">> Congratulations, your ranking is: %u", received);
+           int rank = received - 1000;
+           log_info(">> Congratulations, your rank is: %u", rank);
            //exit client program
            return 0;
         } else if((received >= 100000000) && (received <= 200000000)){
