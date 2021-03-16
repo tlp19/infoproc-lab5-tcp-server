@@ -1,9 +1,12 @@
 # InfoProc Coursework - TCP Server and Client in C++
 
+&nbsp;
+
 ## Informations
 
 This server is designed to be used on Ubuntu 18.04 on a remote instance, either on AWS or Azure. This project was developed and tested on an Amazon EC2 t2.micro instance.
 
+&nbsp;
 
 ## Installation
 
@@ -31,6 +34,7 @@ You might also have to change the privacy settings of the .pem file using ```$ c
 4. Clone the project repository to your remote instance using ```$ git clone https://github.com/inigo-selwood-imperial/de10-game.git```
 5. Move into the TCP server directory using ```$ cd de10-game/tcp_server_and_client```
 
+&nbsp;
 
 ## Running the Game
 
