@@ -26,6 +26,7 @@ You might also have to change the privacy settings of the .pem file using ```$ c
 4. Clone the project repository to your remote instance using ```$ git clone https://github.com/inigo-selwood-imperial/de10-game.git```
 5. Move into the TCP server directory using ```$ cd de10-game/tcp_server_and_client```
 
+
 ## Running the Game
 
 ### Starting the server
@@ -37,14 +38,16 @@ _Note: using just ```$ ./update_and_start_server.sh``` might not work as the scr
 
 This script will do the following operations:
 1. Pull the latest version of the server from GitHub so that it is always up-to-date.
-2. Compile the source code from ```src/tcp_server.cpp``` as ```bin/tcp_server```.
+2. Compile the source code from ```src/tcp_server.cpp``` as ```src/tcp_server```.
 3. Start the server on port 7000 (the default port).
 
-If you have already used the script before, and don't want to pull the whole repository, you can also just directly run the server with ```$ ./src/tcp_server 7000```
+If you have already used the script before, and don't want to pull the whole repository again, you can also just directly run the server on port 7000 with ```$ ./src/tcp_server 7000```
 
 ### Starting the clients
 
 Once you have started the server, you can tell each player to connect to it with their client program.
+
+_Note: You need to start the server before running the clients. Otherwise, the client program will not have an address to connect to and will terminate immediately.
 
 As a player, to run the client, you need to have cloned this repository on your local machine, have g++ installed, and run
 ```$ bash update_client.sh```
@@ -60,6 +63,13 @@ Where:
 
 The terminal will hold twice during the execution of the server. To continue, you will be prompted to press the ```ENTER``` key of your keyboard.
 
+The first time this will happen is right after starting the server: the server will hold before accepting any incoming connections so that every clients have the time to be started and try to connect to the server. After pressing ```ENTER```, the server will cycle through all incoming connections and add them to the player list.
+
+Once this is done, the server terminal will hold again, and this time pressing ```ENTER``` will start the game and make the server do the following operations:
+- Send the randomly generated coordinates to every client that are listed as players.
+- Listen for the times of the players sent by each client.
+- Once every time has been received, rank the players by time, and send each player its rank.
+
 
 ### Closing the server
 
@@ -68,3 +78,9 @@ At the end of the round, both server and clients will stop automatically. Should
 ### Changing game parameters
 
 If you either want to increase the maximum number of player allowed in a single game (```backlog```), or the range that angles are being randomly generated at (```angle_range```), you can modify either of these parameters in ```include/game_parameters.hpp```.
+
+#### Angle generation
+
+Both X-axis and Y-axis coordinates are being generated randomly using the C++ ```<random>``` header.
+First, we use a truly random number generator (```random_device```) to generate a seed that is then fed to a pseudo random number generator (```mt19936```) that is then used to generate both axis coordinates.
+
