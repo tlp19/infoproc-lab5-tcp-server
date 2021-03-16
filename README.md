@@ -86,5 +86,5 @@ If you either want to increase the maximum number of player allowed in a single 
 
 Both X-axis and Y-axis coordinates are being generated randomly using the C++ ```<random>``` header.
 
-First, a truly random number generator (```random_device```) is used to generate a seed that is fed to a pseudo random number generator (```mt19936```) that is then used to generate both X and Y axis angles.
+First, a truly random number generator (```random_device```) is used to generate a seed that is fed to a pseudo random number generator (```mt19936```) that is then used to generate both X and Y axis angles within the specified angle range.
 
