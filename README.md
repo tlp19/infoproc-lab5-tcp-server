@@ -4,7 +4,7 @@
 
 ### Setting up a AWS/Azure instance to host the Server
 
-Note: if you already have a working AWS/Azure instance, you can skip the first instruction.
+_Note: if you already have a working AWS/Azure instance, you can skip the first instruction._
 
 1. Instanciate a free instance on your provider of choice following the instructions provided in the lab
 2. The server will listen to connections being made on port 7000 (by default). So, in the Security section, you should add a new Inbound Rule for TCP connections being made on port 7000 from anywhere.
@@ -22,7 +22,7 @@ You might also have to change the privacy settings of the .pem file using ```$ c
 
 1. Check for updates of your packages by running ```$ sudo apt-get update```
 2. Install the g++ package using ```$ sudo apt-get install g++```
-3. If it is not installed by default, install or update Git using ```$ sudo apt-get install git```
+3. If not installed by default, install, or update Git using ```$ sudo apt-get install git```
 4. Clone the project repository to your remote instance using ```$ git clone https://github.com/inigo-selwood-imperial/de10-game.git```
 5. Move into the TCP server directory using ```$ cd de10-game/tcp_server_and_client```
 
