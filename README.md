@@ -1,5 +1,10 @@
 # InfoProc Coursework - TCP Server and Client in C++
 
+## Informations
+
+This server is designed to be used on Ubuntu 18.04 on a remote instance, either on AWS or Azure. This project was developed and tested on an Amazon EC2 t2.micro instance.
+
+
 ## Installation
 
 ### Setting up a AWS/Azure instance to host the Server
