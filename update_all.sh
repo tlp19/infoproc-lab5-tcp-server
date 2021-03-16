@@ -7,15 +7,16 @@ echo "## Getting latest version from GitHub"
 echo ""
 git pull origin master
 
-# Compile the server
+# Compile the client
 echo ""
 echo "## Compiling src/tcp_client.cpp"
 echo ""
 g++ src/tcp_client.cpp -o src/tcp_client
 echo "log: client compiled as ./src/tcp_client"
 
-# Connect to the server adsress and port with client
+# Compile the server
 echo ""
-echo "## Connecting to server at address $1 on port 7000"
+echo "## Compiling src/tcp_server.cpp"
 echo ""
-./src/tcp_client $1:7000
+g++ src/tcp_server.cpp -o src/tcp_server
+echo "log: server compiled as ./src/tcp_server"
