@@ -24,7 +24,7 @@ You can connect using the command ```
 ssh -i ~/<KeyPairToFileName>.pem ubuntu@<IpAddressOfInstance>```
 
 You might have to type "yes" in order to add the ip address to the list of know servers.
-You might also have to change the privacy settings of the .pem file using ```$ chmod u-rwx ~/<KeyPairFileName>.pem``` and then try again.
+You might also have to change the privacy settings of the .pem file using ```$ chmod og-rwx ~/<KeyPairFileName>.pem``` and then try again.
 
 ### Installing the server on your instance
 
