@@ -2,7 +2,7 @@
 set -e
 
 if [ -z "$1" ]; then
-   echo usage: $0 directory
+   echo "Usage: bash $0 <ip_address_of_server>"
    exit
 fi
 
@@ -13,4 +13,4 @@ PORT=7000
 echo ""
 echo "## Connecting to address $ADDR on port $PORT"
 echo ""
-./src/tcp_client $(ADDR):$(PORT)
+./src/tcp_client $ADDR:$PORT
