@@ -13,10 +13,3 @@ echo "## Compiling src/tcp_client.cpp"
 echo ""
 g++ src/tcp_client.cpp -o src/tcp_client
 echo "log: client compiled as ./src/tcp_client"
-
-# Compile the server
-echo ""
-echo "## Compiling src/tcp_server.cpp"
-echo ""
-g++ src/tcp_server.cpp -o src/tcp_server
-echo "log: server compiled as ./src/tcp_server"
