@@ -1,5 +1,5 @@
-#include "ip_helpers.hpp"
-#include "game_parameters.hpp"
+#include "../include/ip_helpers.hpp"
+#include "../include/game_parameters.hpp"
 
 
 //Takes an unsigned int and adjusts it to the range specified in game_parameters

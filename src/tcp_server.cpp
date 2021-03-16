@@ -1,5 +1,5 @@
-#include "ip_helpers.hpp"
-#include "game_parameters.hpp"
+#include "../include/ip_helpers.hpp"
+#include "../include/game_parameters.hpp"
 
 
 int main(int argc, char *argv[])
